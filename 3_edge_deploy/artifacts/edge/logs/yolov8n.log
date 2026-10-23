@@ -1,0 +1,44 @@
+=== 实验三 · YOLOv8n 导出 ONNX（不训练）===
+torch=2.8.0+cu128
+Ultralytics 8.4.183 🚀 Python-3.12.3 torch-2.8.0+cu128 CPU (Intel Xeon Platinum 8470Q)
+WARNING ⚠️ This model has no one-to-one head; using one-to-many outputs.
+YOLOv8n summary (fused): 72 layers, 3,151,904 parameters, 0 gradients, 8.7 GFLOPs
+
+[34m[1mPyTorch:[0m starting from 'yolov8n.pt' with input shape (1, 3, 640, 640) BCHW and output shape(s) (1, 84, 8400) (6.2 MB)
+
+[34m[1mONNX:[0m starting export with onnx 1.23.2 opset 12...
+[34m[1mONNX:[0m slimming with onnxslim 0.1.98...
+[34m[1mONNX:[0m export success ✅ 1.2s, saved as 'yolov8n.onnx' (12.3 MB)
+
+Export complete (1.3s)
+Results saved to [1m/root/autodl-tmp/edge/autodl/yolov8n.onnx[0m
+Predict:         yolo predict task=detect model=yolov8n.onnx imgsz=640 
+Validate:        yolo val task=detect model=yolov8n.onnx imgsz=640 data=coco.yaml 
+Visualize:       https://netron.app
+[ok] out/yolov8n/yolov8n.onnx
+
+[任务卡 12] Netron 口径核对
+      输入 [('images', [1, 3, 640, 640])]
+      输出 [('output0', [1, 84, 8400])]
+      [ok] 输入名与输出形状均符合手册
+
+[任务卡 12] 一致性校验
+      test_0.jpg     原始输出最大误差 9.766e-04
+      test_1.jpg     原始输出最大误差 9.155e-04
+      全部图片最大误差 = 9.766e-04
+      test_0.jpg:  pytorch 5 框 / onnx 5 框
+      类别+位置匹配 5/5，最大中心偏差 0.05 px，最大置信度差 0.0006
+      其中 person 类 4 个（实验三只保留类别号 0）
+      test_1.jpg:  pytorch 3 框 / onnx 3 框
+      类别+位置匹配 3/3，最大中心偏差 0.03 px，最大置信度差 0.0006
+      其中 person 类 2 个（实验三只保留类别号 0）
+
+[附带] 任务卡 13 的量化校准素材
+      [提示] 只拿到 2 张；手册建议 100~200 张，可把 COCO 图拷进 calib_images 后重跑本步骤
+      校准清单 2 行 -> out/yolov8n/calib_list.txt
+
+=== 完成，产物 ===
+      out/yolov8n/yolov8n.onnx
+      out/yolov8n/calib_list.txt
+
+下一步：把 out/yolov8n/yolov8n.onnx 传到 x86 转换机，用 RKNN-Toolkit2 转 RKNN（任务卡 13）

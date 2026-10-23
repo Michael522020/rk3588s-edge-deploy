@@ -1,0 +1,35 @@
+{
+  "input_name": "input",
+  "output_name": "logits",
+  "classes": [
+    "NORMAL",
+    "PNEUMONIA"
+  ],
+  "input_shape": [
+    1,
+    3,
+    224,
+    224
+  ],
+  "output_shape": [
+    1,
+    2
+  ],
+  "resize": [
+    224,
+    224
+  ],
+  "mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "layout": "NCHW",
+  "sample_path": "data/chest_xray/train/NORMAL/IM-0115-0001.jpeg",
+  "sample_true_label": "NORMAL"
+}

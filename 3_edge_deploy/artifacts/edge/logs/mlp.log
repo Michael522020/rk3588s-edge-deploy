@@ -1,0 +1,60 @@
+=== 实验一 · 信用卡欺诈检测 ===
+device=cuda  torch=2.8.0+cu128  seed=42
+
+[任务卡 1] 分层切分与标准化
+      全集 284807 笔，正样本 492 笔，占比 0.17275%
+      train:  182276 条  正样本占比 0.17281%
+      val  :   45569 条  正样本占比 0.17336%
+      test :   56962 条  正样本占比 0.17204%
+      切分结果已落盘并重新加载校验一致
+
+[任务卡 2] 全连接网络定义
+      结构 29 -> 64 -> 32 -> 1，Dropout(0.3)，参数量 = 4033
+      单样本输出形状 = (1, 1)
+      推理模式两次前向最大差 = 0.000e+00
+
+[任务卡 3] 带权重的二分类损失
+  epoch  1/15  loss=1.40265
+  epoch  2/15  loss=1.36418
+  epoch  3/15  loss=1.33786
+  epoch  4/15  loss=1.29591
+  epoch  5/15  loss=1.27105
+  epoch  6/15  loss=1.24054
+  epoch  7/15  loss=1.21141
+  epoch  8/15  loss=1.17802
+  epoch  9/15  loss=1.15644
+  epoch 10/15  loss=1.13919
+  epoch 11/15  loss=1.11820
+  epoch 12/15  loss=1.09152
+  epoch 13/15  loss=1.06425
+  epoch 14/15  loss=1.04393
+  epoch 15/15  loss=1.02447
+
+      训练耗时 0.2s
+      验证 AUPRC   = 0.43707  (随机基线 0.00173)
+      验证 ROC-AUC = 0.89492
+      测试 AUPRC   = 0.51740
+      阈值 0.770 -> 查准率 0.3866 查全率 0.7653
+      预测正类占比 0.00341 vs 真实 0.00172
+
+[任务卡 4] 导出 ONNX 并校验
+/root/autodl-tmp/edge/autodl/01_mlp_fraud_train_export.py:203: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter will be the default. To switch now, set dynamo=True in torch.onnx.export. This new exporter supports features like exporting LLMs with DynamicCache. We encourage you to try it and share feedback to help improve the experience. Learn more about the new export logic: https://pytorch.org/docs/stable/onnx_dynamo.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html.
+  torch.onnx.export(
+[ok] out/mlp_fraud/mlp_fraud.onnx  +  out/mlp_fraud/mlp_fraud_sample.npy
+      Netron 口径 -> 输入 'input' 输出 'logits'
+Traceback (most recent call last):
+  File "/root/autodl-tmp/edge/autodl/01_mlp_fraud_train_export.py", line 346, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/root/autodl-tmp/edge/autodl/01_mlp_fraud_train_export.py", line 321, in main
+    metrics["onnx_max_err"], iname, oname = verify_onnx(onnx_path, model, data, device)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/edge/autodl/01_mlp_fraud_train_export.py", line 228, in verify_onnx
+    [sess.run([oname], {iname: x_te[i : i + 256]})[0] for i in range(0, len(x_te), 256)],
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/edge/venv-train/lib/python3.12/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 395, in run
+    return self._sess.run(output_names, input_feed, run_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+onnxruntime.capi.onnxruntime_pybind11_state.InvalidArgument: [ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Got invalid dimensions for input: input for the following indices
+ index: 0 Got: 256 Expected: 1
+ Please fix either the inputs/outputs or the model.

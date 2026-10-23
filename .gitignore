@@ -1,0 +1,28 @@
+# ---- 本地开发配置：含明文口令与内网地址，绝不入库 ----
+.claude/
+
+# ---- 模型二进制与数据集 ----
+# 体积大（合计约 900 MB）、且都能由脚本重新生成。
+# 可交付的权重走 GitHub Release 下载，见 3_edge_deploy/artifacts/models/README.md。
+*.rknn
+*.onnx
+*.pth
+*.safetensors
+*.npz
+*.npy
+*.pt
+
+# MiniMind 实验 08 的权重转换产物：模型输出，不是源码
+3_edge_deploy/artifacts/minimind/minimind-3/
+
+# Ultralytics 自带的测试图，第三方素材，不随本仓库分发
+3_edge_deploy/artifacts/*.jpg
+
+# ---- 打包中间产物 ----
+*.tgz
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/

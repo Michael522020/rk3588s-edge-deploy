@@ -1,0 +1,17 @@
+
+===== [11:14:41] 停掉还在下 CUDA 栈的 pip =====
+
+===== [11:14:43] 重建干净 venv /root/autodl-tmp/edge/venv-rknn =====
+
+===== [11:14:50] 补齐 rknn 真正需要的依赖（不含 torch） =====
+
+===== [11:28:08] 安装 rknn-toolkit2==2.3.2（--no-deps，跳过 torch 栈） =====
+
+===== [11:28:16] 自检：能否 import 并实例化 RKNN =====
+  python         3.12.3
+  numpy          1.26.4   (rknn 要求 <=1.26.4)
+  onnx           1.22.0
+  onnxruntime    1.26.0
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+AttributeError: module 'rknn' has no attribute '__version__'

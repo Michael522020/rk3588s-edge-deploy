@@ -1,0 +1,12 @@
+[16:00:35] 等 SFT 进程退出...
+[16:01:35] SFT 已结束，产物：
+-rw-r--r-- 1 root root 137684407 Oct 21 16:01 /root/autodl-tmp/minimind/minimind/out/full_sft_768.pth
+-rw-r--r-- 1 root root 137684407 Oct 21 13:51 /root/autodl-tmp/minimind/minimind/out/pretrain_768.pth
+[16:01:35] 启动肺炎 CNN 训练（batch 64, workers 32）
+[16:03:19] CNN 训练结束，开始转 RKNN（浮点 + INT8）
+[16:03:22] 全部完成
+-rw-r--r-- 1 root root   25729 Oct 21 14:00 /root/autodl-tmp/edge/autodl/out/rknn/mlp_fraud.rknn
+-rw-r--r-- 1 root root   36775 Oct 21 13:50 /root/autodl-tmp/edge/autodl/out/rknn/mlp_fraud_fp.rknn
+-rw-r--r-- 1 root root 5107374 Oct 21 16:03 /root/autodl-tmp/edge/autodl/out/rknn/pneumonia_fp.rknn
+-rw-r--r-- 1 root root 4933264 Oct 21 15:41 /root/autodl-tmp/edge/autodl/out/rknn/yolov8n.rknn
+-rw-r--r-- 1 root root 8288694 Oct 21 15:41 /root/autodl-tmp/edge/autodl/out/rknn/yolov8n_fp.rknn

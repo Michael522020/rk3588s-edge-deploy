@@ -1,0 +1,5 @@
+=== 实验二第五节 · 肺炎 CNN 影像分类 ===
+  ONNX    : out/pneumonia/pneumonia.onnx
+  目标平台: rk3588
+  量化    : INT8
+开量化必须给 --calib 或 --calib-dir

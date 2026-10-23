@@ -1,0 +1,9 @@
+
+===== [10:18:20] 建 venv-train (--system-site-packages) =====
+
+===== [10:18:28] 装训练/导出依赖 =====
+
+===== [10:20:14] 建 venv-rknn (干净) =====
+
+===== [10:20:20] 装 rknn-toolkit2==2.3.2（必须与板端 lite2 对齐）+ numpy 1.26.4 + onnx =====
+Terminated

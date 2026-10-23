@@ -1,0 +1,17 @@
+{
+  "n_test": 56962,
+  "threshold": 0.77,
+  "latency_ms_mean": 0.2117,
+  "latency_ms_median": 0.2176,
+  "latency_ms_p99": 0.3634,
+  "pred_positive_rate": 0.001685,
+  "true_positive_rate": 0.00172,
+  "metrics_source": "sklearn",
+  "rknn_auprc": 0.48372,
+  "rknn_roc_auc": 0.888045,
+  "onnx_auprc": 0.517395,
+  "onnx_roc_auc": 0.886183,
+  "agreement": 0.999982,
+  "auprc_drop": 0.033675,
+  "max_logit_diff": 2.694421
+}

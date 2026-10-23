@@ -1,0 +1,17 @@
+# 统一用 LF：板子和训练机都是 Linux，CRLF 的 .sh 在那边会直接执行失败
+* text=auto eol=lf
+
+*.py  text eol=lf
+*.sh  text eol=lf
+*.md  text eol=lf
+*.json text eol=lf
+*.log text eol=lf
+
+*.rknn binary
+*.onnx binary
+*.pth  binary
+*.safetensors binary
+*.npz  binary
+*.npy  binary
+*.jpg  binary
+*.tgz  binary

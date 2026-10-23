@@ -1,0 +1,374 @@
+=== 实验二第五节 · 肺炎 CNN 影像分类 ===
+  ONNX    : out/pneumonia/pneumonia.onnx
+  目标平台: rk3588
+  量化    : 关闭（浮点版本，用于先验证链路）
+I rknn-toolkit2 version: 2.3.2
+---- config ----
+  {'target_platform': 'rk3588', 'float_dtype': 'float16', 'quantized_algorithm': 'normal', 'quantized_dtype': 'w8a8', 'quantized_method': 'layer', 'optimization_level': 3}
+---- load_onnx ----
+I Loading :   0%|                                                           | 0/106 [00:00<?, ?it/s]I Loading : 100%|██████████████████████████████████████████████| 106/106 [00:00<00:00, 58568.86it/s]
+[1;33mW[0m [1;33mload_onnx: The config.mean_values is None, zeros will be set for input 0![0m
+[1;33mW[0m [1;33mload_onnx: The config.std_values is None, ones will be set for input 0![0m
+---- build（关闭量化，浮点版本）----
+D base_optimize ...
+D base_optimize done.
+D 
+D fold_constant ...
+D fold_constant done.
+D 
+D correct_ops ...
+D correct_ops done.
+D 
+D fuse_ops ...
+D fuse_ops results:
+D     convert_global_avgpool_to_conv: remove node = ['/GlobalAveragePool'], add node = ['/GlobalAveragePool_2conv0']
+D     convert_flatten_to_reshape: remove node = ['/Flatten'], add node = ['/Flatten_2rs']
+D     convert_gemm_by_exmatmul: remove node = ['/classifier/classifier.1/Gemm'], add node = ['/Flatten_output_0_tp', '/Flatten_output_0_tp_rs', '/classifier/classifier.1/Gemm#1', 'logits_mm_tp', 'logits_mm_tp_rs']
+D     unsqueeze_to_4d_transpose: remove node = [], add node = ['/Flatten_output_0_rs', '/Flatten_output_0_tp-rs']
+D     bypass_two_reshape: remove node = ['/Flatten_output_0_rs', '/Flatten_2rs']
+D     fuse_transpose_reshape: remove node = ['/Flatten_output_0_tp', 'logits_mm_tp']
+D     bypass_two_reshape: remove node = ['/Flatten_output_0_tp_rs', '/Flatten_output_0_tp-rs']
+D     convert_exmatmul_to_conv: remove node = ['/classifier/classifier.1/Gemm#1'], add node = ['/classifier/classifier.1/Gemm#2']
+D     fold_constant ...
+D     fold_constant done.
+D fuse_ops done.
+D 
+D sparse_weight ...
+D sparse_weight done.
+D 
+I rknn building ...
+I RKNN: [16:47:41.416] compress = 0, conv_eltwise_activation_fuse = 1, global_fuse = 1, multi-core-model-mode = 7, output_optimize = 1, layout_match = 1, enable_argb_group = 0, op_group_sram_opt = 0, enable_flash_attention = 0, op_group_nbuf_opt = 0, safe_fuse = 0
+I RKNN: librknnc version: 2.3.2 (e045de294f@2025-04-07T19:48:25)
+D RKNN: [16:47:41.436] RKNN is invoked
+D RKNN: [16:47:41.500] >>>>>> start: rknn::RKNNExtractCustomOpAttrs
+D RKNN: [16:47:41.500] <<<<<<<< end: rknn::RKNNExtractCustomOpAttrs
+D RKNN: [16:47:41.500] >>>>>> start: rknn::RKNNSetOpTargetPass
+D RKNN: [16:47:41.500] <<<<<<<< end: rknn::RKNNSetOpTargetPass
+D RKNN: [16:47:41.500] >>>>>> start: rknn::RKNNBindNorm
+D RKNN: [16:47:41.500] <<<<<<<< end: rknn::RKNNBindNorm
+D RKNN: [16:47:41.500] >>>>>> start: rknn::RKNNEliminateQATDataConvert
+D RKNN: [16:47:41.500] <<<<<<<< end: rknn::RKNNEliminateQATDataConvert
+D RKNN: [16:47:41.500] >>>>>> start: rknn::RKNNConvStrideFixPass
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNConvStrideFixPass
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNTileGroupConv
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNTileGroupConv
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNAddConvBias
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNAddConvBias
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNTileChannel
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNTileChannel
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNDuplicateWeightPass
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNDuplicateWeightPass
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNInitRNNConst
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNInitRNNConst
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNPerChannelPrep
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNPerChannelPrep
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNBnQuant
+D RKNN: [16:47:41.501] <<<<<<<< end: rknn::RKNNBnQuant
+D RKNN: [16:47:41.501] >>>>>> start: rknn::RKNNFuseOptimizerPass
+D RKNN: [16:47:41.511] <<<<<<<< end: rknn::RKNNFuseOptimizerPass
+D RKNN: [16:47:41.511] >>>>>> start: rknn::RKNNTurnAutoPad
+D RKNN: [16:47:41.511] <<<<<<<< end: rknn::RKNNTurnAutoPad
+D RKNN: [16:47:41.511] >>>>>> start: rknn::RKNNInitCastConst
+D RKNN: [16:47:41.511] <<<<<<<< end: rknn::RKNNInitCastConst
+D RKNN: [16:47:41.511] >>>>>> start: rknn::RKNNMultiSurfacePass
+D RKNN: [16:47:41.511] <<<<<<<< end: rknn::RKNNMultiSurfacePass
+D RKNN: [16:47:41.511] >>>>>> start: rknn::RKNNReplaceConstantTensorPass
+D RKNN: [16:47:41.511] <<<<<<<< end: rknn::RKNNReplaceConstantTensorPass
+D RKNN: [16:47:41.511] >>>>>> start: rknn::RKNNSubgraphManager
+D RKNN: [16:47:41.511] <<<<<<<< end: rknn::RKNNSubgraphManager
+D RKNN: [16:47:41.511] >>>>>> start: OpEmit
+D RKNN: [16:47:41.511] <<<<<<<< end: OpEmit
+D RKNN: [16:47:41.511] >>>>>> start: rknn::RKNNAddFirstConv
+D RKNN: [16:47:41.511] <<<<<<<< end: rknn::RKNNAddFirstConv
+D RKNN: [16:47:41.511] >>>>>> start: rknn::RKNNTilingPass
+D RKNN: [16:47:41.512] <<<<<<<< end: rknn::RKNNTilingPass
+D RKNN: [16:47:41.512] >>>>>> start: rknn::RKNNLayoutMatchPass
+D RKNN: [16:47:41.512] <<<<<<<< end: rknn::RKNNLayoutMatchPass
+D RKNN: [16:47:41.512] >>>>>> start: rknn::RKNNAddSecondaryNode
+D RKNN: [16:47:41.513] <<<<<<<< end: rknn::RKNNAddSecondaryNode
+D RKNN: [16:47:41.513] >>>>>> start: rknn::RKNNAllocateConvCachePass
+D RKNN: [16:47:41.513] <<<<<<<< end: rknn::RKNNAllocateConvCachePass
+D RKNN: [16:47:41.513] >>>>>> start: OpEmit
+D RKNN: [16:47:41.518] <<<<<<<< end: OpEmit
+D RKNN: [16:47:41.518] >>>>>> start: rknn::RKNNSubGraphMemoryPlanPass
+D RKNN: [16:47:41.518] <<<<<<<< end: rknn::RKNNSubGraphMemoryPlanPass
+D RKNN: [16:47:41.518] >>>>>> start: rknn::RKNNProfileAnalysisPass
+D RKNN: [16:47:41.518] <<<<<<<< end: rknn::RKNNProfileAnalysisPass
+D RKNN: [16:47:41.518] >>>>>> start: rknn::RKNNOperatorIdGenPass
+D RKNN: [16:47:41.518] <<<<<<<< end: rknn::RKNNOperatorIdGenPass
+D RKNN: [16:47:41.518] >>>>>> start: rknn::RKNNWeightTransposePass
+D RKNN: [16:47:41.542] <<<<<<<< end: rknn::RKNNWeightTransposePass
+D RKNN: [16:47:41.542] >>>>>> start: rknn::RKNNCPUWeightTransposePass
+D RKNN: [16:47:41.542] <<<<<<<< end: rknn::RKNNCPUWeightTransposePass
+D RKNN: [16:47:41.542] >>>>>> start: rknn::RKNNModelBuildPass
+E RKNN: [16:47:41.551] Unkown op target: 0
+D RKNN: [16:47:41.551] <<<<<<<< end: rknn::RKNNModelBuildPass
+D RKNN: [16:47:41.551] >>>>>> start: rknn::RKNNModelRegCmdbuildPass
+D RKNN: [16:47:41.561] --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+D RKNN: [16:47:41.561]                                                         Network Layer Information Table                                                      
+D RKNN: [16:47:41.561] --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+D RKNN: [16:47:41.561] ID   OpType             DataType Target InputShape                               OutputShape            Cycles(DDR/NPU/Total)    RW(KB)       FullName        
+D RKNN: [16:47:41.561] --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+D RKNN: [16:47:41.561] 0    InputOperator      FLOAT16  CPU    \                                        (1,3,224,224)          0/0/0                    0            InputOperator:input
+D RKNN: [16:47:41.561] 1    ConvClip           FLOAT16  NPU    (1,3,224,224),(32,3,3,3),(32)            (1,32,112,112)         46868/225792/225792      298          Conv:/features/features.0/features.0.0/Conv
+D RKNN: [16:47:41.561] 2    ConvClip           FLOAT16  NPU    (1,32,112,112),(1,32,3,3),(32)           (1,32,112,112)         67910/112896/112896      784          Conv:/features/features.1/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 3    Conv               FLOAT16  NPU    (1,32,112,112),(16,32,1,1),(16)          (1,16,112,112)         50956/25088/50956        785          Conv:/features/features.1/conv/conv.1/Conv
+D RKNN: [16:47:41.561] 4    ConvClip           FLOAT16  NPU    (1,16,112,112),(96,16,1,1),(96)          (1,96,112,112)         118936/150528/150528     395          Conv:/features/features.2/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 5    ConvClip           FLOAT16  NPU    (1,96,112,112),(1,96,3,3),(96)           (1,96,56,56)           127365/56448/127365      2354         Conv:/features/features.2/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 6    Conv               FLOAT16  NPU    (1,96,56,56),(24,96,1,1),(24)            (1,24,56,56)           32019/18816/32019        592          Conv:/features/features.2/conv/conv.2/Conv
+D RKNN: [16:47:41.561] 7    ConvClip           FLOAT16  NPU    (1,24,56,56),(144,24,1,1),(144)          (1,144,56,56)          44961/56448/56448        156          Conv:/features/features.3/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 8    ConvClip           FLOAT16  NPU    (1,144,56,56),(1,144,3,3),(144)          (1,144,56,56)          76502/84672/84672        885          Conv:/features/features.3/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 9    ConvAdd            FLOAT16  NPU    (1,144,56,56),(24,144,1,1),(24),...      (1,24,56,56)           51208/31360/51208        1035         Conv:/features/features.3/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 10   ConvClip           FLOAT16  NPU    (1,24,56,56),(144,24,1,1),(144)          (1,144,56,56)          44961/56448/56448        156          Conv:/features/features.4/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 11   ConvClip           FLOAT16  NPU    (1,144,56,56),(1,144,3,3),(144)          (1,144,28,28)          47865/21168/47865        885          Conv:/features/features.4/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 12   Conv               FLOAT16  NPU    (1,144,28,28),(32,144,1,1),(32)          (1,32,28,28)           12062/7840/12062         229          Conv:/features/features.4/conv/conv.2/Conv
+D RKNN: [16:47:41.561] 13   ConvClip           FLOAT16  NPU    (1,32,28,28),(192,32,1,1),(192)          (1,192,28,28)          15401/18816/18816        61           Conv:/features/features.5/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 14   ConvClip           FLOAT16  NPU    (1,192,28,28),(1,192,3,3),(192)          (1,192,28,28)          25634/21168/25634        298          Conv:/features/features.5/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 15   ConvAdd            FLOAT16  NPU    (1,192,28,28),(32,192,1,1),(32),...      (1,32,28,28)           17495/9408/17495         355          Conv:/features/features.5/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 16   ConvClip           FLOAT16  NPU    (1,32,28,28),(192,32,1,1),(192)          (1,192,28,28)          15401/18816/18816        61           Conv:/features/features.6/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 17   ConvClip           FLOAT16  NPU    (1,192,28,28),(1,192,3,3),(192)          (1,192,28,28)          25634/21168/25634        298          Conv:/features/features.6/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 18   ConvAdd            FLOAT16  NPU    (1,192,28,28),(32,192,1,1),(32),...      (1,32,28,28)           17495/9408/17495         355          Conv:/features/features.6/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 19   ConvClip           FLOAT16  NPU    (1,32,28,28),(192,32,1,1),(192)          (1,192,28,28)          15401/18816/18816        61           Conv:/features/features.7/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 20   ConvClip           FLOAT16  NPU    (1,192,28,28),(1,192,3,3),(192)          (1,192,14,14)          16088/5616/16088         298          Conv:/features/features.7/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 21   Conv               FLOAT16  NPU    (1,192,14,14),(64,192,1,1),(64)          (1,64,14,14)           5293/4992/5293           97           Conv:/features/features.7/conv/conv.2/Conv
+D RKNN: [16:47:41.561] 22   ConvClip           FLOAT16  NPU    (1,64,14,14),(384,64,1,1),(384)          (1,384,14,14)          9568/9984/9984           74           Conv:/features/features.8/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 23   ConvClip           FLOAT16  NPU    (1,384,14,14),(1,384,3,3),(384)          (1,384,14,14)          13085/11232/13085        155          Conv:/features/features.8/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 24   ConvAdd            FLOAT16  NPU    (1,384,14,14),(64,384,1,1),(64),...      (1,64,14,14)           10574/9984/10574         219          Conv:/features/features.8/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 25   ConvClip           FLOAT16  NPU    (1,64,14,14),(384,64,1,1),(384)          (1,384,14,14)          9568/9984/9984           74           Conv:/features/features.9/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 26   ConvClip           FLOAT16  NPU    (1,384,14,14),(1,384,3,3),(384)          (1,384,14,14)          13085/11232/13085        155          Conv:/features/features.9/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 27   ConvAdd            FLOAT16  NPU    (1,384,14,14),(64,384,1,1),(64),...      (1,64,14,14)           10574/9984/10574         219          Conv:/features/features.9/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 28   ConvClip           FLOAT16  NPU    (1,64,14,14),(384,64,1,1),(384)          (1,384,14,14)          9568/9984/9984           74           Conv:/features/features.10/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 29   ConvClip           FLOAT16  NPU    (1,384,14,14),(1,384,3,3),(384)          (1,384,14,14)          13085/11232/13085        155          Conv:/features/features.10/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 30   ConvAdd            FLOAT16  NPU    (1,384,14,14),(64,384,1,1),(64),...      (1,64,14,14)           10574/9984/10574         219          Conv:/features/features.10/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 31   ConvClip           FLOAT16  NPU    (1,64,14,14),(384,64,1,1),(384)          (1,384,14,14)          9568/9984/9984           74           Conv:/features/features.11/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 32   ConvClip           FLOAT16  NPU    (1,384,14,14),(1,384,3,3),(384)          (1,384,14,14)          13085/11232/13085        155          Conv:/features/features.11/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 33   Conv               FLOAT16  NPU    (1,384,14,14),(96,384,1,1),(96)          (1,96,14,14)           11088/14976/14976        219          Conv:/features/features.11/conv/conv.2/Conv
+D RKNN: [16:47:41.561] 34   ConvClip           FLOAT16  NPU    (1,96,14,14),(576,96,1,1),(576)          (1,576,14,14)          15910/22464/22464        147          Conv:/features/features.12/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 35   ConvClip           FLOAT16  NPU    (1,576,14,14),(1,576,3,3),(576)          (1,576,14,14)          19627/16848/19627        232          Conv:/features/features.12/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 36   ConvAdd            FLOAT16  NPU    (1,576,14,14),(96,576,1,1),(96),...      (1,96,14,14)           17420/22464/22464        365          Conv:/features/features.12/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 37   ConvClip           FLOAT16  NPU    (1,96,14,14),(576,96,1,1),(576)          (1,576,14,14)          15910/22464/22464        147          Conv:/features/features.13/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 38   ConvClip           FLOAT16  NPU    (1,576,14,14),(1,576,3,3),(576)          (1,576,14,14)          19627/16848/19627        232          Conv:/features/features.13/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 39   ConvAdd            FLOAT16  NPU    (1,576,14,14),(96,576,1,1),(96),...      (1,96,14,14)           17420/22464/22464        365          Conv:/features/features.13/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 40   ConvClip           FLOAT16  NPU    (1,96,14,14),(576,96,1,1),(576)          (1,576,14,14)          15910/22464/22464        147          Conv:/features/features.14/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 41   ConvClip           FLOAT16  NPU    (1,576,14,14),(1,576,3,3),(576)          (1,576,7,7)            12468/5184/12468         232          Conv:/features/features.14/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 42   Conv               FLOAT16  NPU    (1,576,7,7),(160,576,1,1),(160)          (1,160,7,7)            10869/11520/11520        235          Conv:/features/features.14/conv/conv.2/Conv
+D RKNN: [16:47:41.561] 43   ConvClip           FLOAT16  NPU    (1,160,7,7),(960,160,1,1),(960)          (1,960,7,7)            17790/19200/19200        319          Conv:/features/features.15/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 44   ConvClip           FLOAT16  NPU    (1,960,7,7),(1,960,3,3),(960)            (1,960,7,7)            8848/8640/8848           112          Conv:/features/features.15/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 45   ConvAdd            FLOAT16  NPU    (1,960,7,7),(160,960,1,1),(160),...      (1,160,7,7)            18318/19200/19200        407          Conv:/features/features.15/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 46   ConvClip           FLOAT16  NPU    (1,160,7,7),(960,160,1,1),(960)          (1,960,7,7)            17790/19200/19200        319          Conv:/features/features.16/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 47   ConvClip           FLOAT16  NPU    (1,960,7,7),(1,960,3,3),(960)            (1,960,7,7)            8848/8640/8848           112          Conv:/features/features.16/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 48   ConvAdd            FLOAT16  NPU    (1,960,7,7),(160,960,1,1),(160),...      (1,160,7,7)            18318/19200/19200        407          Conv:/features/features.16/conv/conv.2/Conv_ConvAdd
+D RKNN: [16:47:41.561] 49   ConvClip           FLOAT16  NPU    (1,160,7,7),(960,160,1,1),(960)          (1,960,7,7)            17790/19200/19200        319          Conv:/features/features.17/conv/conv.0/conv.0.0/Conv
+D RKNN: [16:47:41.561] 50   ConvClip           FLOAT16  NPU    (1,960,7,7),(1,960,3,3),(960)            (1,960,7,7)            8848/8640/8848           112          Conv:/features/features.17/conv/conv.1/conv.1.0/Conv
+D RKNN: [16:47:41.561] 51   Conv               FLOAT16  NPU    (1,960,7,7),(320,960,1,1),(320)          (1,320,7,7)            31332/38400/38400        693          Conv:/features/features.17/conv/conv.2/Conv
+D RKNN: [16:47:41.561] 52   ConvClip           FLOAT16  NPU    (1,320,7,7),(1280,320,1,1),(1280)        (1,1280,7,7)           41478/51200/51200        835          Conv:/features/features.18/features.18.0/Conv
+D RKNN: [16:47:41.561] 53   Conv               FLOAT16  NPU    (1,1280,7,7),(1,1280,7,7),(1280)         (1,1280,1,1)           10931/15680/15680        250          Conv:/GlobalAveragePool_2conv0
+D RKNN: [16:47:41.561] 54   Conv               FLOAT16  NPU    (1,1280,1,1),(2,1280,1,1),(2)            (1,2,1,1)              329/640/640              7            Conv:/classifier/classifier.1/Gemm#2
+D RKNN: [16:47:41.561] 55   Reshape            FLOAT16  CPU    (1,2,1,1),(2)                            (1,2)                  0/0/0                    0            Reshape:logits_mm_tp_rs
+D RKNN: [16:47:41.561] 56   OutputOperator     FLOAT16  CPU    (1,2)                                    \                      0/0/0                    0            OutputOperator:logits
+D RKNN: [16:47:41.561] --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+D RKNN: [16:47:41.561] <<<<<<<< end: rknn::RKNNModelRegCmdbuildPass
+D RKNN: [16:47:41.561] >>>>>> start: rknn::RKNNModelExportPass
+D RKNN: [16:47:41.561] Export RKNN model to /tmp/tmpwj6fehuq/check.rknn
+D RKNN: [16:47:41.573] <<<<<<<< end: rknn::RKNNModelExportPass
+D RKNN: [16:47:41.573] >>>>>> start: rknn::RKNNMemStatisticsPass
+D RKNN: [16:47:41.573] ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+D RKNN: [16:47:41.573]                                                        Feature Tensor Information Table                                                  
+D RKNN: [16:47:41.573] -----------------------------------------------------------------------------------------------------------------------------------+---------------------------------
+D RKNN: [16:47:41.573] ID  User           Tensor                                                   DataType  DataFormat   OrigShape      NativeShape      |     [Start       End)       Size
+D RKNN: [16:47:41.573] -----------------------------------------------------------------------------------------------------------------------------------+---------------------------------
+D RKNN: [16:47:41.573] 1   ConvClip       input                                                    FLOAT16   NC1HWC2      (1,3,224,224)  (1,4,224,224,3)  | 0x00000000 0x00049800 0x00049800
+D RKNN: [16:47:41.573] 2   ConvClip       /features/features.0/features.0.2/Clip_output_0          FLOAT16   NC1HWC2      (1,32,112,112) (1,16,112,112,8) | 0x00049800 0x0010d800 0x000c4000
+D RKNN: [16:47:41.573] 3   Conv           /features/features.1/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,32,112,112) (1,16,112,112,8) | 0x0010d800 0x001d1800 0x000c4000
+D RKNN: [16:47:41.573] 4   ConvClip       /features/features.1/conv/conv.1/Conv_output_0           FLOAT16   NC1HWC2      (1,16,112,112) (1,8,112,112,8)  | 0x00000000 0x00062000 0x00062000
+D RKNN: [16:47:41.573] 5   ConvClip       /features/features.2/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,96,112,112) (1,48,112,112,8) | 0x00062000 0x002ae000 0x0024c000
+D RKNN: [16:47:41.573] 6   Conv           /features/features.2/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,96,56,56)   (1,48,56,56,8)   | 0x002ae000*0x00341000 0x00093000
+D RKNN: [16:47:41.573] 7   ConvClip       /features/features.2/conv/conv.2/Conv_output_0           FLOAT16   NC1HWC2      (1,24,56,56)   (1,16,56,56,8)   | 0x00000000 0x00031000 0x00031000
+D RKNN: [16:47:41.573] 8   ConvClip       /features/features.3/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,144,56,56)  (1,72,56,56,8)   | 0x00031000 0x0010d800 0x000dc800
+D RKNN: [16:47:41.573] 9   ConvAdd        /features/features.3/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,144,56,56)  (1,80,56,56,8)   | 0x0010d800 0x00202800 0x000f5000
+D RKNN: [16:47:41.573] 9   ConvAdd        /features/features.2/conv/conv.2/Conv_output_0           FLOAT16   NC1HWC2      (1,24,56,56)   (1,16,56,56,8)   | 0x00000000 0x00031000 0x00031000
+D RKNN: [16:47:41.573] 10  ConvClip       /features/features.3/Add_output_0                        FLOAT16   NC1HWC2      (1,24,56,56)   (1,16,56,56,8)   | 0x00031000 0x00062000 0x00031000
+D RKNN: [16:47:41.573] 11  ConvClip       /features/features.4/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,144,56,56)  (1,72,56,56,8)   | 0x00062000 0x0013e800 0x000dc800
+D RKNN: [16:47:41.573] 12  Conv           /features/features.4/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,144,28,28)  (1,80,28,28,8)   | 0x00000000 0x0003d400 0x0003d400
+D RKNN: [16:47:41.573] 13  ConvClip       /features/features.4/conv/conv.2/Conv_output_0           FLOAT16   NC1HWC2      (1,32,28,28)   (1,16,28,28,8)   | 0x0003d400 0x00049800 0x0000c400
+D RKNN: [16:47:41.573] 14  ConvClip       /features/features.5/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,192,28,28)  (1,96,28,28,8)   | 0x00049800 0x00093000 0x00049800
+D RKNN: [16:47:41.573] 15  ConvAdd        /features/features.5/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,192,28,28)  (1,96,28,28,8)   | 0x00093000 0x000dc800 0x00049800
+D RKNN: [16:47:41.573] 15  ConvAdd        /features/features.4/conv/conv.2/Conv_output_0           FLOAT16   NC1HWC2      (1,32,28,28)   (1,16,28,28,8)   | 0x0003d400 0x00049800 0x0000c400
+D RKNN: [16:47:41.573] 16  ConvClip       /features/features.5/Add_output_0                        FLOAT16   NC1HWC2      (1,32,28,28)   (1,16,28,28,8)   | 0x00000000 0x0000c400 0x0000c400
+D RKNN: [16:47:41.573] 17  ConvClip       /features/features.6/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,192,28,28)  (1,96,28,28,8)   | 0x0000c400 0x00055c00 0x00049800
+D RKNN: [16:47:41.573] 18  ConvAdd        /features/features.6/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,192,28,28)  (1,96,28,28,8)   | 0x00055c00 0x0009f400 0x00049800
+D RKNN: [16:47:41.573] 18  ConvAdd        /features/features.5/Add_output_0                        FLOAT16   NC1HWC2      (1,32,28,28)   (1,16,28,28,8)   | 0x00000000 0x0000c400 0x0000c400
+D RKNN: [16:47:41.573] 19  ConvClip       /features/features.6/Add_output_0                        FLOAT16   NC1HWC2      (1,32,28,28)   (1,16,28,28,8)   | 0x0000c400 0x00018800 0x0000c400
+D RKNN: [16:47:41.573] 20  ConvClip       /features/features.7/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,192,28,28)  (1,96,28,28,8)   | 0x00018800 0x00062000 0x00049800
+D RKNN: [16:47:41.573] 21  Conv           /features/features.7/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,192,14,14)  (1,96,14,14,8)   | 0x00000000 0x00012600 0x00012600
+D RKNN: [16:47:41.573] 22  ConvClip       /features/features.7/conv/conv.2/Conv_output_0           FLOAT16   NC1HWC2      (1,64,14,14)   (1,32,14,14,8)   | 0x00012600 0x00018800 0x00006200
+D RKNN: [16:47:41.573] 23  ConvClip       /features/features.8/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x00018800 0x0003d400 0x00024c00
+D RKNN: [16:47:41.573] 24  ConvAdd        /features/features.8/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x0003d400 0x00062000 0x00024c00
+D RKNN: [16:47:41.573] 24  ConvAdd        /features/features.7/conv/conv.2/Conv_output_0           FLOAT16   NC1HWC2      (1,64,14,14)   (1,32,14,14,8)   | 0x00012600 0x00018800 0x00006200
+D RKNN: [16:47:41.573] 25  ConvClip       /features/features.8/Add_output_0                        FLOAT16   NC1HWC2      (1,64,14,14)   (1,32,14,14,8)   | 0x00000000 0x00006200 0x00006200
+D RKNN: [16:47:41.573] 26  ConvClip       /features/features.9/conv/conv.0/conv.0.2/Clip_output_0  FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x00006200 0x0002ae00 0x00024c00
+D RKNN: [16:47:41.573] 27  ConvAdd        /features/features.9/conv/conv.1/conv.1.2/Clip_output_0  FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x0002ae00 0x0004fa00 0x00024c00
+D RKNN: [16:47:41.573] 27  ConvAdd        /features/features.8/Add_output_0                        FLOAT16   NC1HWC2      (1,64,14,14)   (1,32,14,14,8)   | 0x00000000 0x00006200 0x00006200
+D RKNN: [16:47:41.573] 28  ConvClip       /features/features.9/Add_output_0                        FLOAT16   NC1HWC2      (1,64,14,14)   (1,32,14,14,8)   | 0x00006200 0x0000c400 0x00006200
+D RKNN: [16:47:41.573] 29  ConvClip       /features/features.10/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x0000c400 0x00031000 0x00024c00
+D RKNN: [16:47:41.573] 30  ConvAdd        /features/features.10/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x00031000 0x00055c00 0x00024c00
+D RKNN: [16:47:41.573] 30  ConvAdd        /features/features.9/Add_output_0                        FLOAT16   NC1HWC2      (1,64,14,14)   (1,32,14,14,8)   | 0x00006200 0x0000c400 0x00006200
+D RKNN: [16:47:41.573] 31  ConvClip       /features/features.10/Add_output_0                       FLOAT16   NC1HWC2      (1,64,14,14)   (1,32,14,14,8)   | 0x00000000 0x00006200 0x00006200
+D RKNN: [16:47:41.573] 32  ConvClip       /features/features.11/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x00006200 0x0002ae00 0x00024c00
+D RKNN: [16:47:41.573] 33  Conv           /features/features.11/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,384,14,14)  (1,192,14,14,8)  | 0x0002ae00 0x0004fa00 0x00024c00
+D RKNN: [16:47:41.573] 34  ConvClip       /features/features.11/conv/conv.2/Conv_output_0          FLOAT16   NC1HWC2      (1,96,14,14)   (1,48,14,14,8)   | 0x00000000 0x00009300 0x00009300
+D RKNN: [16:47:41.573] 35  ConvClip       /features/features.12/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,576,14,14)  (1,288,14,14,8)  | 0x00009300 0x00040500 0x00037200
+D RKNN: [16:47:41.573] 36  ConvAdd        /features/features.12/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,576,14,14)  (1,288,14,14,8)  | 0x00040500 0x00077700 0x00037200
+D RKNN: [16:47:41.573] 36  ConvAdd        /features/features.11/conv/conv.2/Conv_output_0          FLOAT16   NC1HWC2      (1,96,14,14)   (1,48,14,14,8)   | 0x00000000 0x00009300 0x00009300
+D RKNN: [16:47:41.573] 37  ConvClip       /features/features.12/Add_output_0                       FLOAT16   NC1HWC2      (1,96,14,14)   (1,48,14,14,8)   | 0x00009300 0x00012600 0x00009300
+D RKNN: [16:47:41.573] 38  ConvClip       /features/features.13/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,576,14,14)  (1,288,14,14,8)  | 0x00012600 0x00049800 0x00037200
+D RKNN: [16:47:41.573] 39  ConvAdd        /features/features.13/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,576,14,14)  (1,288,14,14,8)  | 0x00049800 0x00080a00 0x00037200
+D RKNN: [16:47:41.573] 39  ConvAdd        /features/features.12/Add_output_0                       FLOAT16   NC1HWC2      (1,96,14,14)   (1,48,14,14,8)   | 0x00009300 0x00012600 0x00009300
+D RKNN: [16:47:41.573] 40  ConvClip       /features/features.13/Add_output_0                       FLOAT16   NC1HWC2      (1,96,14,14)   (1,48,14,14,8)   | 0x00000000 0x00009300 0x00009300
+D RKNN: [16:47:41.573] 41  ConvClip       /features/features.14/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,576,14,14)  (1,288,14,14,8)  | 0x00009300 0x00040500 0x00037200
+D RKNN: [16:47:41.573] 42  Conv           /features/features.14/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,576,7,7)    (1,304,7,7,8)    | 0x00040500 0x0004ef00 0x0000ea00
+D RKNN: [16:47:41.573] 43  ConvClip       /features/features.14/conv/conv.2/Conv_output_0          FLOAT16   NC1HWC2      (1,160,7,7)    (1,84,7,7,8)     | 0x00000000 0x00004100 0x00004100
+D RKNN: [16:47:41.573] 44  ConvClip       /features/features.15/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,960,7,7)    (1,508,7,7,8)    | 0x00004100 0x0001c700 0x00018600
+D RKNN: [16:47:41.573] 45  ConvAdd        /features/features.15/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,960,7,7)    (1,508,7,7,8)    | 0x0001c700 0x00034d00 0x00018600
+D RKNN: [16:47:41.573] 45  ConvAdd        /features/features.14/conv/conv.2/Conv_output_0          FLOAT16   NC1HWC2      (1,160,7,7)    (1,84,7,7,8)     | 0x00000000 0x00004100 0x00004100
+D RKNN: [16:47:41.573] 46  ConvClip       /features/features.15/Add_output_0                       FLOAT16   NC1HWC2      (1,160,7,7)    (1,84,7,7,8)     | 0x00004100 0x00008200 0x00004100
+D RKNN: [16:47:41.573] 47  ConvClip       /features/features.16/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,960,7,7)    (1,508,7,7,8)    | 0x00008200 0x00020800 0x00018600
+D RKNN: [16:47:41.573] 48  ConvAdd        /features/features.16/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,960,7,7)    (1,508,7,7,8)    | 0x00020800 0x00038e00 0x00018600
+D RKNN: [16:47:41.573] 48  ConvAdd        /features/features.15/Add_output_0                       FLOAT16   NC1HWC2      (1,160,7,7)    (1,84,7,7,8)     | 0x00004100 0x00008200 0x00004100
+D RKNN: [16:47:41.573] 49  ConvClip       /features/features.16/Add_output_0                       FLOAT16   NC1HWC2      (1,160,7,7)    (1,84,7,7,8)     | 0x00000000 0x00004100 0x00004100
+D RKNN: [16:47:41.573] 50  ConvClip       /features/features.17/conv/conv.0/conv.0.2/Clip_output_0 FLOAT16   NC1HWC2      (1,960,7,7)    (1,508,7,7,8)    | 0x00004100 0x0001c700 0x00018600
+D RKNN: [16:47:41.573] 51  Conv           /features/features.17/conv/conv.1/conv.1.2/Clip_output_0 FLOAT16   NC1HWC2      (1,960,7,7)    (1,508,7,7,8)    | 0x0001c700 0x00034d00 0x00018600
+D RKNN: [16:47:41.573] 52  ConvClip       /features/features.17/conv/conv.2/Conv_output_0          FLOAT16   NC1HWC2      (1,320,7,7)    (1,168,7,7,8)    | 0x00000000 0x00008200 0x00008200
+D RKNN: [16:47:41.573] 53  Conv           /features/features.18/features.18.2/Clip_output_0        FLOAT16   NC1HWC2      (1,1280,7,7)   (1,678,7,7,8)    | 0x00008200 0x00028a00 0x00020800
+D RKNN: [16:47:41.573] 54  Conv           /GlobalAveragePool_output_0                              FLOAT16   NC1HWC2      (1,1280,1,1)   (1,640,1,1,8)    | 0x00000000 0x00000a00 0x00000a00
+D RKNN: [16:47:41.573] 55  Reshape        logits_mm                                                FLOAT16   NC1HWC2      (1,2,1,1)      (1,8,1,1,8)      | 0x00000a00 0x00000a20 0x00000020
+D RKNN: [16:47:41.573] 56  OutputOperator logits                                                   FLOAT16   UNDEFINED    (1,2)          (1,2)            | 0x00000040 0x00000080 0x00000040
+D RKNN: [16:47:41.573] -----------------------------------------------------------------------------------------------------------------------------------+---------------------------------
+D RKNN: [16:47:41.573] -----------------------------------------------------------------------------------------------------
+D RKNN: [16:47:41.573]                                  Const Tensor Information Table                    
+D RKNN: [16:47:41.573] -------------------------------------------------------------------+---------------------------------
+D RKNN: [16:47:41.573] ID  User     Tensor                       DataType  OrigShape      |     [Start       End)       Size
+D RKNN: [16:47:41.573] -------------------------------------------------------------------+---------------------------------
+D RKNN: [16:47:41.573] 1   ConvClip onnx::Conv_538               FLOAT16   (32,3,3,3)     | 0x00001440 0x00002640 0x00001200
+D RKNN: [16:47:41.573] 1   ConvClip onnx::Conv_539               FLOAT     (32)           | 0x00002640 0x000026c0 0x00000080
+D RKNN: [16:47:41.573] 2   ConvClip onnx::Conv_541               FLOAT16   (1,32,3,3)     | 0x000026c0 0x00002900 0x00000240
+D RKNN: [16:47:41.573] 2   ConvClip onnx::Conv_542               FLOAT     (32)           | 0x00002900 0x00002980 0x00000080
+D RKNN: [16:47:41.573] 3   Conv     onnx::Conv_544               FLOAT16   (16,32,1,1)    | 0x00002980 0x00002d80 0x00000400
+D RKNN: [16:47:41.573] 3   Conv     onnx::Conv_545               FLOAT     (16)           | 0x00002d80 0x00002dc0 0x00000040
+D RKNN: [16:47:41.573] 4   ConvClip onnx::Conv_547               FLOAT16   (96,16,1,1)    | 0x00002dc0 0x000039c0 0x00000c00
+D RKNN: [16:47:41.573] 4   ConvClip onnx::Conv_548               FLOAT     (96)           | 0x000039c0 0x00003b40 0x00000180
+D RKNN: [16:47:41.573] 5   ConvClip onnx::Conv_550               FLOAT16   (1,96,3,3)     | 0x00003b40 0x00004200 0x000006c0
+D RKNN: [16:47:41.573] 5   ConvClip onnx::Conv_551               FLOAT     (96)           | 0x00004200 0x00004380 0x00000180
+D RKNN: [16:47:41.573] 6   Conv     onnx::Conv_553               FLOAT16   (24,96,1,1)    | 0x00004380 0x00005580 0x00001200
+D RKNN: [16:47:41.573] 6   Conv     onnx::Conv_554               FLOAT     (24)           | 0x00005580 0x00005600 0x00000080
+D RKNN: [16:47:41.573] 7   ConvClip onnx::Conv_556               FLOAT16   (144,24,1,1)   | 0x00005600 0x00007a00 0x00002400
+D RKNN: [16:47:41.573] 7   ConvClip onnx::Conv_557               FLOAT     (144)          | 0x00007a00 0x00007c40 0x00000240
+D RKNN: [16:47:41.573] 8   ConvClip onnx::Conv_559               FLOAT16   (1,144,3,3)    | 0x00007c40 0x00008660 0x00000a20
+D RKNN: [16:47:41.573] 8   ConvClip onnx::Conv_560               FLOAT     (144)          | 0x00008680 0x00008900 0x00000280
+D RKNN: [16:47:41.573] 9   ConvAdd  onnx::Conv_562               FLOAT16   (24,144,1,1)   | 0x00008900 0x0000a400 0x00001b00
+D RKNN: [16:47:41.573] 9   ConvAdd  onnx::Conv_563               FLOAT     (24)           | 0x0000a400 0x0000a480 0x00000080
+D RKNN: [16:47:41.573] 10  ConvClip onnx::Conv_565               FLOAT16   (144,24,1,1)   | 0x0000a480 0x0000c880 0x00002400
+D RKNN: [16:47:41.573] 10  ConvClip onnx::Conv_566               FLOAT     (144)          | 0x0000c880 0x0000cac0 0x00000240
+D RKNN: [16:47:41.573] 11  ConvClip onnx::Conv_568               FLOAT16   (1,144,3,3)    | 0x0000cac0 0x0000d4e0 0x00000a20
+D RKNN: [16:47:41.573] 11  ConvClip onnx::Conv_569               FLOAT     (144)          | 0x0000d500 0x0000d780 0x00000280
+D RKNN: [16:47:41.573] 12  Conv     onnx::Conv_571               FLOAT16   (32,144,1,1)   | 0x0000d780 0x0000fb80 0x00002400
+D RKNN: [16:47:41.573] 12  Conv     onnx::Conv_572               FLOAT     (32)           | 0x0000fb80 0x0000fc00 0x00000080
+D RKNN: [16:47:41.573] 13  ConvClip onnx::Conv_574               FLOAT16   (192,32,1,1)   | 0x0000fc00 0x00012c00 0x00003000
+D RKNN: [16:47:41.573] 13  ConvClip onnx::Conv_575               FLOAT     (192)          | 0x00012c00 0x00012f00 0x00000300
+D RKNN: [16:47:41.573] 14  ConvClip onnx::Conv_577               FLOAT16   (1,192,3,3)    | 0x00012f00 0x00013c80 0x00000d80
+D RKNN: [16:47:41.573] 14  ConvClip onnx::Conv_578               FLOAT     (192)          | 0x00013c80 0x00013f80 0x00000300
+D RKNN: [16:47:41.573] 15  ConvAdd  onnx::Conv_580               FLOAT16   (32,192,1,1)   | 0x00013f80 0x00016f80 0x00003000
+D RKNN: [16:47:41.573] 15  ConvAdd  onnx::Conv_581               FLOAT     (32)           | 0x00016f80 0x00017000 0x00000080
+D RKNN: [16:47:41.573] 16  ConvClip onnx::Conv_583               FLOAT16   (192,32,1,1)   | 0x00017000 0x0001a000 0x00003000
+D RKNN: [16:47:41.573] 16  ConvClip onnx::Conv_584               FLOAT     (192)          | 0x0001a000 0x0001a300 0x00000300
+D RKNN: [16:47:41.573] 17  ConvClip onnx::Conv_586               FLOAT16   (1,192,3,3)    | 0x0001a300 0x0001b080 0x00000d80
+D RKNN: [16:47:41.573] 17  ConvClip onnx::Conv_587               FLOAT     (192)          | 0x0001b080 0x0001b380 0x00000300
+D RKNN: [16:47:41.573] 18  ConvAdd  onnx::Conv_589               FLOAT16   (32,192,1,1)   | 0x0001b380 0x0001e380 0x00003000
+D RKNN: [16:47:41.573] 18  ConvAdd  onnx::Conv_590               FLOAT     (32)           | 0x0001e380 0x0001e400 0x00000080
+D RKNN: [16:47:41.573] 19  ConvClip onnx::Conv_592               FLOAT16   (192,32,1,1)   | 0x0001e400 0x00021400 0x00003000
+D RKNN: [16:47:41.573] 19  ConvClip onnx::Conv_593               FLOAT     (192)          | 0x00021400 0x00021700 0x00000300
+D RKNN: [16:47:41.573] 20  ConvClip onnx::Conv_595               FLOAT16   (1,192,3,3)    | 0x00021700 0x00022480 0x00000d80
+D RKNN: [16:47:41.573] 20  ConvClip onnx::Conv_596               FLOAT     (192)          | 0x00022480 0x00022780 0x00000300
+D RKNN: [16:47:41.573] 21  Conv     onnx::Conv_598               FLOAT16   (64,192,1,1)   | 0x00022780 0x00028780 0x00006000
+D RKNN: [16:47:41.573] 21  Conv     onnx::Conv_599               FLOAT     (64)           | 0x00028780 0x00028880 0x00000100
+D RKNN: [16:47:41.573] 22  ConvClip onnx::Conv_601               FLOAT16   (384,64,1,1)   | 0x00028880 0x00034880 0x0000c000
+D RKNN: [16:47:41.573] 22  ConvClip onnx::Conv_602               FLOAT     (384)          | 0x00034880 0x00034e80 0x00000600
+D RKNN: [16:47:41.573] 23  ConvClip onnx::Conv_604               FLOAT16   (1,384,3,3)    | 0x00034e80 0x00036980 0x00001b00
+D RKNN: [16:47:41.573] 23  ConvClip onnx::Conv_605               FLOAT     (384)          | 0x00036980 0x00036f80 0x00000600
+D RKNN: [16:47:41.573] 24  ConvAdd  onnx::Conv_607               FLOAT16   (64,384,1,1)   | 0x00036f80 0x00042f80 0x0000c000
+D RKNN: [16:47:41.573] 24  ConvAdd  onnx::Conv_608               FLOAT     (64)           | 0x00042f80 0x00043080 0x00000100
+D RKNN: [16:47:41.573] 25  ConvClip onnx::Conv_610               FLOAT16   (384,64,1,1)   | 0x00043080 0x0004f080 0x0000c000
+D RKNN: [16:47:41.573] 25  ConvClip onnx::Conv_611               FLOAT     (384)          | 0x0004f080 0x0004f680 0x00000600
+D RKNN: [16:47:41.573] 26  ConvClip onnx::Conv_613               FLOAT16   (1,384,3,3)    | 0x0004f680 0x00051180 0x00001b00
+D RKNN: [16:47:41.573] 26  ConvClip onnx::Conv_614               FLOAT     (384)          | 0x00051180 0x00051780 0x00000600
+D RKNN: [16:47:41.573] 27  ConvAdd  onnx::Conv_616               FLOAT16   (64,384,1,1)   | 0x00051780 0x0005d780 0x0000c000
+D RKNN: [16:47:41.573] 27  ConvAdd  onnx::Conv_617               FLOAT     (64)           | 0x0005d780 0x0005d880 0x00000100
+D RKNN: [16:47:41.573] 28  ConvClip onnx::Conv_619               FLOAT16   (384,64,1,1)   | 0x0005d880 0x00069880 0x0000c000
+D RKNN: [16:47:41.573] 28  ConvClip onnx::Conv_620               FLOAT     (384)          | 0x00069880 0x00069e80 0x00000600
+D RKNN: [16:47:41.573] 29  ConvClip onnx::Conv_622               FLOAT16   (1,384,3,3)    | 0x00069e80 0x0006b980 0x00001b00
+D RKNN: [16:47:41.573] 29  ConvClip onnx::Conv_623               FLOAT     (384)          | 0x0006b980 0x0006bf80 0x00000600
+D RKNN: [16:47:41.573] 30  ConvAdd  onnx::Conv_625               FLOAT16   (64,384,1,1)   | 0x0006bf80 0x00077f80 0x0000c000
+D RKNN: [16:47:41.573] 30  ConvAdd  onnx::Conv_626               FLOAT     (64)           | 0x00077f80 0x00078080 0x00000100
+D RKNN: [16:47:41.573] 31  ConvClip onnx::Conv_628               FLOAT16   (384,64,1,1)   | 0x00078080 0x00084080 0x0000c000
+D RKNN: [16:47:41.573] 31  ConvClip onnx::Conv_629               FLOAT     (384)          | 0x00084080 0x00084680 0x00000600
+D RKNN: [16:47:41.573] 32  ConvClip onnx::Conv_631               FLOAT16   (1,384,3,3)    | 0x00084680 0x00086180 0x00001b00
+D RKNN: [16:47:41.573] 32  ConvClip onnx::Conv_632               FLOAT     (384)          | 0x00086180 0x00086780 0x00000600
+D RKNN: [16:47:41.573] 33  Conv     onnx::Conv_634               FLOAT16   (96,384,1,1)   | 0x00086780 0x00098780 0x00012000
+D RKNN: [16:47:41.573] 33  Conv     onnx::Conv_635               FLOAT     (96)           | 0x00098780 0x00098900 0x00000180
+D RKNN: [16:47:41.573] 34  ConvClip onnx::Conv_637               FLOAT16   (576,96,1,1)   | 0x00098900 0x000b3900 0x0001b000
+D RKNN: [16:47:41.573] 34  ConvClip onnx::Conv_638               FLOAT     (576)          | 0x000b3900 0x000b4200 0x00000900
+D RKNN: [16:47:41.573] 35  ConvClip onnx::Conv_640               FLOAT16   (1,576,3,3)    | 0x000b4200 0x000b6a80 0x00002880
+D RKNN: [16:47:41.573] 35  ConvClip onnx::Conv_641               FLOAT     (576)          | 0x000b6a80 0x000b7380 0x00000900
+D RKNN: [16:47:41.573] 36  ConvAdd  onnx::Conv_643               FLOAT16   (96,576,1,1)   | 0x000b7380 0x000d2380 0x0001b000
+D RKNN: [16:47:41.573] 36  ConvAdd  onnx::Conv_644               FLOAT     (96)           | 0x000d2380 0x000d2500 0x00000180
+D RKNN: [16:47:41.573] 37  ConvClip onnx::Conv_646               FLOAT16   (576,96,1,1)   | 0x000d2500 0x000ed500 0x0001b000
+D RKNN: [16:47:41.573] 37  ConvClip onnx::Conv_647               FLOAT     (576)          | 0x000ed500 0x000ede00 0x00000900
+D RKNN: [16:47:41.573] 38  ConvClip onnx::Conv_649               FLOAT16   (1,576,3,3)    | 0x000ede00 0x000f0680 0x00002880
+D RKNN: [16:47:41.573] 38  ConvClip onnx::Conv_650               FLOAT     (576)          | 0x000f0680 0x000f0f80 0x00000900
+D RKNN: [16:47:41.573] 39  ConvAdd  onnx::Conv_652               FLOAT16   (96,576,1,1)   | 0x000f0f80 0x0010bf80 0x0001b000
+D RKNN: [16:47:41.573] 39  ConvAdd  onnx::Conv_653               FLOAT     (96)           | 0x0010bf80 0x0010c100 0x00000180
+D RKNN: [16:47:41.573] 40  ConvClip onnx::Conv_655               FLOAT16   (576,96,1,1)   | 0x0010c100 0x00127100 0x0001b000
+D RKNN: [16:47:41.573] 40  ConvClip onnx::Conv_656               FLOAT     (576)          | 0x00127100 0x00127a00 0x00000900
+D RKNN: [16:47:41.573] 41  ConvClip onnx::Conv_658               FLOAT16   (1,576,3,3)    | 0x00127a00 0x0012a280 0x00002880
+D RKNN: [16:47:41.573] 41  ConvClip onnx::Conv_659               FLOAT     (576)          | 0x0012a280 0x0012ab80 0x00000900
+D RKNN: [16:47:41.573] 42  Conv     onnx::Conv_661               FLOAT16   (160,576,1,1)  | 0x0012ab80 0x00157b80 0x0002d000
+D RKNN: [16:47:41.573] 42  Conv     onnx::Conv_662               FLOAT     (160)          | 0x00157b80 0x00157e00 0x00000280
+D RKNN: [16:47:41.573] 43  ConvClip onnx::Conv_664               FLOAT16   (960,160,1,1)  | 0x00157e00 0x001a2e00 0x0004b000
+D RKNN: [16:47:41.573] 43  ConvClip onnx::Conv_665               FLOAT     (960)          | 0x001a2e00 0x001a3d00 0x00000f00
+D RKNN: [16:47:41.573] 44  ConvClip onnx::Conv_667               FLOAT16   (1,960,3,3)    | 0x001a3d00 0x001a8080 0x00004380
+D RKNN: [16:47:41.573] 44  ConvClip onnx::Conv_668               FLOAT     (960)          | 0x001a8080 0x001a8f80 0x00000f00
+D RKNN: [16:47:41.573] 45  ConvAdd  onnx::Conv_670               FLOAT16   (160,960,1,1)  | 0x001a8f80 0x001f3f80 0x0004b000
+D RKNN: [16:47:41.573] 45  ConvAdd  onnx::Conv_671               FLOAT     (160)          | 0x001f3f80 0x001f4200 0x00000280
+D RKNN: [16:47:41.573] 46  ConvClip onnx::Conv_673               FLOAT16   (960,160,1,1)  | 0x001f4200 0x0023f200 0x0004b000
+D RKNN: [16:47:41.573] 46  ConvClip onnx::Conv_674               FLOAT     (960)          | 0x0023f200 0x00240100 0x00000f00
+D RKNN: [16:47:41.573] 47  ConvClip onnx::Conv_676               FLOAT16   (1,960,3,3)    | 0x00240100 0x00244480 0x00004380
+D RKNN: [16:47:41.573] 47  ConvClip onnx::Conv_677               FLOAT     (960)          | 0x00244480 0x00245380 0x00000f00
+D RKNN: [16:47:41.573] 48  ConvAdd  onnx::Conv_679               FLOAT16   (160,960,1,1)  | 0x00245380 0x00290380 0x0004b000
+D RKNN: [16:47:41.573] 48  ConvAdd  onnx::Conv_680               FLOAT     (160)          | 0x00290380 0x00290600 0x00000280
+D RKNN: [16:47:41.573] 49  ConvClip onnx::Conv_682               FLOAT16   (960,160,1,1)  | 0x00290600 0x002db600 0x0004b000
+D RKNN: [16:47:41.573] 49  ConvClip onnx::Conv_683               FLOAT     (960)          | 0x002db600 0x002dc500 0x00000f00
+D RKNN: [16:47:41.573] 50  ConvClip onnx::Conv_685               FLOAT16   (1,960,3,3)    | 0x002dc500 0x002e0880 0x00004380
+D RKNN: [16:47:41.573] 50  ConvClip onnx::Conv_686               FLOAT     (960)          | 0x002e0880 0x002e1780 0x00000f00
+D RKNN: [16:47:41.573] 51  Conv     onnx::Conv_688               FLOAT16   (320,960,1,1)  | 0x002e1780 0x00377780 0x00096000
+D RKNN: [16:47:41.573] 51  Conv     onnx::Conv_689               FLOAT     (320)          | 0x00377780 0x00377c80 0x00000500
+D RKNN: [16:47:41.573] 52  ConvClip onnx::Conv_691               FLOAT16   (1280,320,1,1) | 0x00377c80 0x0043fc80 0x000c8000
+D RKNN: [16:47:41.573] 52  ConvClip onnx::Conv_692               FLOAT     (1280)         | 0x0043fc80 0x00441080 0x00001400
+D RKNN: [16:47:41.573] 53  Conv     /GlobalAveragePool_2conv0_i1 FLOAT16   (1,1280,7,7)   | 0x00441080 0x0045fa80 0x0001ea00
+D RKNN: [16:47:41.573] 53  Conv     /GlobalAveragePool_2conv0_i2 FLOAT     (1280)         | 0x0045fa80 0x00460e80 0x00001400
+D RKNN: [16:47:41.573] 54  Conv     classifier.1.weight          FLOAT16   (2,1280,1,1)   | 0x00000000 0x00001400 0x00001400
+D RKNN: [16:47:41.573] 54  Conv     classifier.1.bias            FLOAT     (2)            | 0x00001400 0x00001440 0x00000040
+D RKNN: [16:47:41.573] 55  Reshape  logits_mm_tp_rs_i1           INT64     (2)            | 0x00460e80 0x00460e90 0x00000010
+D RKNN: [16:47:41.573] -------------------------------------------------------------------+---------------------------------
+D RKNN: [16:47:41.573] ----------------------------------------
+D RKNN: [16:47:41.573] Total Internal Memory Size: 3332KB
+D RKNN: [16:47:41.573] Total Weight Memory Size: 4485.69KB
+D RKNN: [16:47:41.573] ----------------------------------------
+D RKNN: [16:47:41.573] <<<<<<<< end: rknn::RKNNMemStatisticsPass
+I rknn building done.
+---- export_rknn -> out/rknn/pneumonia_fp.rknn ----
+  [提示] 取不到算子表: 'RKNN' object has no attribute 'list_operator'
+---- rknn.release() 已释放 ----
+
+[完成] out/rknn/pneumonia_fp.rknn  (4987.7 KB)
+下一步：scp 到 ubuntu@<板子IP>:/home/ubuntu/models/ 后用 rknn-toolkit-lite2 推理
+提示：先用浮点版本确认链路无误，再加 --quant 跑 INT8，对比两者精度

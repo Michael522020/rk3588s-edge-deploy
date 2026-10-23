@@ -1,0 +1,18 @@
+{
+  "val_auprc": 0.43706739777222864,
+  "val_roc_auc": 0.8949247435101886,
+  "test_auprc": 0.5173954772795115,
+  "test_roc_auc": 0.8861833246241659,
+  "threshold": 0.77,
+  "test_precision": 0.3865979381443299,
+  "test_recall": 0.7653061224489796,
+  "test_pred_positive_rate": 0.003405779291457463,
+  "test_positive_rate": 0.0017204452090867595,
+  "train_seconds": 0.22,
+  "params": 4033,
+  "epochs": 15,
+  "final_loss": 1.024471,
+  "onnx_max_err": 1.1920928955078125e-07,
+  "onnx_input_name": "input",
+  "onnx_output_name": "logits"
+}

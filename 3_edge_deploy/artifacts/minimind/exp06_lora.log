@@ -1,0 +1,16 @@
+Model Params: 63.91M
+Trainable Params: 63.912M
+LLM 总参数量: 64.305 M
+LoRA 参数量: 0.393 M
+LoRA 参数占比: 0.61%
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 91 examples [00:00, 17675.36 examples/s]
+Epoch:[1/10](3/3), loss: 2.3834, logits_loss: 2.3834, aux_loss: 0.0000, lr: 0.00009780, epoch_time: 0.0min
+Epoch:[2/10](3/3), loss: 2.2905, logits_loss: 2.2905, aux_loss: 0.0000, lr: 0.00009141, epoch_time: 0.0min
+Epoch:[3/10](3/3), loss: 2.3134, logits_loss: 2.3134, aux_loss: 0.0000, lr: 0.00008145, epoch_time: 0.0min
+Epoch:[4/10](3/3), loss: 2.1967, logits_loss: 2.1967, aux_loss: 0.0000, lr: 0.00006891, epoch_time: 0.0min
+Epoch:[5/10](3/3), loss: 2.2175, logits_loss: 2.2175, aux_loss: 0.0000, lr: 0.00005500, epoch_time: 0.0min
+Epoch:[6/10](3/3), loss: 2.1014, logits_loss: 2.1014, aux_loss: 0.0000, lr: 0.00004109, epoch_time: 0.0min
+Epoch:[7/10](3/3), loss: 2.1494, logits_loss: 2.1494, aux_loss: 0.0000, lr: 0.00002855, epoch_time: 0.0min
+Epoch:[8/10](3/3), loss: 2.1607, logits_loss: 2.1607, aux_loss: 0.0000, lr: 0.00001859, epoch_time: 0.0min
+Epoch:[9/10](3/3), loss: 2.0477, logits_loss: 2.0477, aux_loss: 0.0000, lr: 0.00001220, epoch_time: 0.0min
+Epoch:[10/10](3/3), loss: 2.0467, logits_loss: 2.0467, aux_loss: 0.0000, lr: 0.00001000, epoch_time: 0.0min

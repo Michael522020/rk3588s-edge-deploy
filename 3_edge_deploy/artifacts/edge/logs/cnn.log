@@ -1,0 +1,39 @@
+=== 实验二 · 肺炎 X 光影像分类 ===
+device=cuda  torch=2.8.0+cu128  seed=42
+
+[任务卡 9] 数据管线
+      训练集             4173 张  正常 1073  肺炎 3100
+      重划验证集           1043 张  正常 268  肺炎 775
+      测试集(含原val)       640 张  正常 242  肺炎 398
+      训练集单张张量形状 = (3, 224, 224)
+      训练集两次读取是否相同 = False  (应为 False)
+      验证集两次读取是否相同 = True  (应为 True)
+
+[任务卡 10] MobileNetV2 迁移学习
+      参数量 = 2.23 M
+      类别权重 = [1.9445480108261108, 0.6730645298957825]
+  [冻结主干] epoch  1/3  loss=0.3546  val_acc=0.8639  肺炎查全率=0.8219
+  [冻结主干] epoch  2/3  loss=0.2134  val_acc=0.9262  肺炎查全率=0.9110
+  [冻结主干] epoch  3/3  loss=0.2012  val_acc=0.9137  肺炎查全率=0.8903
+  [解冻微调] epoch  1/10  loss=0.1099  val_acc=0.9425  肺炎查全率=0.9226
+  [解冻微调] epoch  2/10  loss=0.0557  val_acc=0.9732  肺炎查全率=0.9652
+  [解冻微调] epoch  3/10  loss=0.0445  val_acc=0.9827  肺炎查全率=0.9806
+  [解冻微调] epoch  4/10  loss=0.0328  val_acc=0.9875  肺炎查全率=0.9897
+  [解冻微调] epoch  5/10  loss=0.0271  val_acc=0.9827  肺炎查全率=0.9819
+  [解冻微调] epoch  6/10  loss=0.0234  val_acc=0.9885  肺炎查全率=0.9858
+  [解冻微调] epoch  7/10  loss=0.0200  val_acc=0.9856  肺炎查全率=0.9806
+  [解冻微调] epoch  8/10  loss=0.0149  val_acc=0.9895  肺炎查全率=0.9923
+  [解冻微调] epoch  9/10  loss=0.0154  val_acc=0.9914  肺炎查全率=0.9923
+  [解冻微调] epoch 10/10  loss=0.0089  val_acc=0.9904  肺炎查全率=0.9897
+
+      训练总耗时 78.8s（冻结 16.8s + 微调 62.0s）
+      验证 准确率=0.9904  肺炎查全率=0.9897  AUROC=0.9997
+      测试 准确率=0.8500  肺炎查全率=0.9975  AUROC=0.9629
+      测试混淆矩阵 {'tp': 397, 'fp': 95, 'fn': 1, 'tn': 147}  (tp/fp/fn/tn)
+
+[任务卡 11] 导出 ONNX
+/root/autodl-tmp/edge/autodl/02_cnn_pneumonia_train_export.py:220: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter will be the default. To switch now, set dynamo=True in torch.onnx.export. This new exporter supports features like exporting LLMs with DynamicCache. We encourage you to try it and share feedback to help improve the experience. Learn more about the new export logic: https://pytorch.org/docs/stable/onnx_dynamo.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html.
+  torch.onnx.export(
+      ONNX 输出形状 = (64, 2)  (应为 (N, 2))
+      onnxruntime vs PyTorch 最大误差 = 3.314e-05  (判据 <= 1e-05，已关 TF32)
+ONNX 校验未通过，不要继续。
